@@ -14,7 +14,6 @@ public class ConversationToConversationDtoConverter implements Converter<Convers
     @Override
     public ConversationDto convert(Conversation source) {
         ConversationDto result = new ConversationDto();
-        List<Message> messageList = source.getMessages();
         List<MessageDto> messageDtoList = source.getMessages().stream()
                 .map(this::convertMessageToMessageDto)
                 .collect(Collectors.toList());

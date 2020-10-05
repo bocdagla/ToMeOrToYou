@@ -1,11 +1,9 @@
 package com.tomeortoyou.entities;
 
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Document(collection = "conversation")
 public final class Conversation {
@@ -14,6 +12,7 @@ public final class Conversation {
     private String id;
     private ArrayList<String> users;
     private ArrayList<Message> messages;
+
     public Conversation() {
         this.users = new ArrayList<>();
         this.messages = new ArrayList<>();

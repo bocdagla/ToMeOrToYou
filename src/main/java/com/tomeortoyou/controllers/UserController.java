@@ -15,24 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private IUserService userService;
 
     @GetMapping("/all")
     public UserListDto allUsers() {
-        UserListDto result = userService.getAllUsers();
-
-        return result;
+        return userService.getAllUsers();
     }
 
     //TODO Change it so it gets the userId from the headers
     @GetMapping("/{username}")
-    public UserDto getUser(@PathVariable String username) {
-        UserDto result = userService.getUser(username);
-
-        return result;
+    public UserDto getUser(@PathVariable String userId) {
+        return userService.getUser(userId);
     }
 
     @PostMapping("/create")
@@ -42,8 +35,6 @@ public class UserController {
 
     @GetMapping("/{userid}/conversations")
     public ConversationListDto getUserConversations(@PathVariable String userid) {
-        ConversationListDto conversations = userService.getUserConversations(userid);
-
-        return conversations;
+        return userService.getUserConversations(userid);
     }
 }

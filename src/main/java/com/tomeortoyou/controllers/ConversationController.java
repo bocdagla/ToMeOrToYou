@@ -19,9 +19,7 @@ public class ConversationController {
 
     @GetMapping("/all")
     public ConversationListDto getConversations() {
-        ConversationListDto conversations = conversationService.getAllConversations();
-
-        return conversations;
+        return conversationService.getAllConversations();
     }
 
     @PostMapping("/create")
