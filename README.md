@@ -1,7 +1,7 @@
 # ToMeOrToYou
 A simple message Rest Api woking on SpringBoot
 
-## What am i looking at? 🤨
+## What am I looking at? 🤨
 ToMeOrToYou has been created as a way to learn the SpringBoot Framework, so if you encounter a bug or simply you wish to contribute, I'll be very happy to have your feedback.
 Some of the controller methods may not seem very "apropiate", but right now they are used for testing purposes.
 
