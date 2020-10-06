@@ -1,12 +1,12 @@
 package com.tomeortoyou.services;
 
+import com.tomeortoyou.dto.request.CreateConversationDto;
+import com.tomeortoyou.dto.request.SendMessageDto;
 import com.tomeortoyou.dto.response.ConversationDto;
 import com.tomeortoyou.dto.response.ConversationListDto;
 
 public interface IConversationService {
-    public ConversationListDto getAllConversations();
-
-    public ConversationDto createConversation(String senderUsername, String receiverUsername);
-
-    public ConversationDto addMessage(String username, String conversationId, String content);
+    ConversationListDto getAllConversations();
+    ConversationDto createConversation(CreateConversationDto createConversationDto);
+    ConversationDto addMessage(SendMessageDto messageDto);
 }

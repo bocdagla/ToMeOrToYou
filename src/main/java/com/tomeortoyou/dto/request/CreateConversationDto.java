@@ -1,14 +1,24 @@
 package com.tomeortoyou.dto.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.io.Serializable;
 
-@Setter
-@Getter
-@NoArgsConstructor
-public class CreateConversationDto {
-    private String senderId;
-    private String receiverId;
+@Builder
+@Value
+@JsonDeserialize(builder = CreateConversationDto.CreateConversationDtoBuilder.class)
+public class CreateConversationDto implements Serializable {
+    @NonNull
+    String senderId;
+    @NonNull
+    String receiverId;
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class CreateConversationDtoBuilder {
+        // Lombok will add constructor, setters, build method
+    }
 }

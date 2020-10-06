@@ -8,9 +8,9 @@ public class UserToUserDtoConverter implements Converter<User, UserDto> {
 
     @Override
     public UserDto convert(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setUserName(user.getUsername());
-        return userDto;
+        return UserDto.builder()
+                .id(user.getId())
+                .userName(user.getUsername())
+                .build();
     }
 }

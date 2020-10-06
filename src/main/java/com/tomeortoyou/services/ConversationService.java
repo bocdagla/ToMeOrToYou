@@ -1,5 +1,7 @@
 package com.tomeortoyou.services;
 
+import com.tomeortoyou.dto.request.CreateConversationDto;
+import com.tomeortoyou.dto.request.SendMessageDto;
 import com.tomeortoyou.dto.response.ConversationDto;
 import com.tomeortoyou.dto.response.ConversationListDto;
 import com.tomeortoyou.entities.Conversation;
@@ -7,7 +9,6 @@ import com.tomeortoyou.entities.Message;
 import com.tomeortoyou.entities.User;
 import com.tomeortoyou.repositories.ConversationRepository;
 import com.tomeortoyou.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,30 +18,33 @@ import java.util.stream.Collectors;
 
 public class ConversationService implements IConversationService {
 
-    @Autowired
-    private ConversationRepository conversationRepository;
+    private final ConversationRepository conversationRepository;
+    private final UserRepository userRepository;
+    private final ConversionService conversionService;
 
-    @Autowired
-    private ConversionService conversionService;
-
-    @Autowired
-    private UserRepository userRepository;
-
+    public ConversationService(ConversationRepository conversationRepository, UserRepository userRepository, ConversionService conversionService) {
+        this.conversationRepository = conversationRepository;
+        this.userRepository = userRepository;
+        this.conversionService = conversionService;
+    }
 
     public ConversationListDto getAllConversations() {
-        ConversationListDto result = new ConversationListDto();
         List<Conversation> conversationList = conversationRepository.findAll();
         List<ConversationDto> conversationDtoList = conversationList.stream()
                 .map(this::conversationToDto)
                 .collect(Collectors.toList());
 
-        result.setConversations(conversationDtoList);
-        return result;
+        return ConversationListDto.builder()
+                .conversations(conversationDtoList)
+                .build();
     }
 
     @Override
-    public ConversationDto createConversation(String senderId, String receiverId) {
+    public ConversationDto createConversation(CreateConversationDto createConversationDto) {
         //TODO Control this case in the ControllerAdvice
+        String senderId = createConversationDto.getSenderId();
+        String receiverId = createConversationDto.getReceiverId();
+
         User sender = userRepository
                 .findById(senderId)
                 .orElseThrow(this::createUserNotFoundException);
@@ -64,7 +68,11 @@ public class ConversationService implements IConversationService {
     }
 
     @Override
-    public ConversationDto addMessage(String userId, String conversationId, String content) {
+    public ConversationDto addMessage(SendMessageDto messageDto) {
+        String userId = messageDto.getSenderId();
+        String conversationId = messageDto.getConversationId();
+        String content = messageDto.getContent();
+
         //TODO Create a ControllerAdvice and control the throws there
         User user = userRepository.findById(userId).orElseThrow(this::createUserNotFoundException);
         Conversation conversation = conversationRepository
@@ -80,8 +88,7 @@ public class ConversationService implements IConversationService {
 
 
     private ConversationDto conversationToDto(Conversation conversation) {
-        ConversationDto dto = conversionService.convert(conversation, ConversationDto.class);
-        return dto;
+        return conversionService.convert(conversation, ConversationDto.class);
     }
 
     //TODO Create a ExceptionFactory so we don't use exception on the service and we can reuse them

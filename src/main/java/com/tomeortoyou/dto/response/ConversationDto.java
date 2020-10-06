@@ -1,13 +1,13 @@
 package com.tomeortoyou.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Builder
+@Value
 public class ConversationDto {
-    private String id;
-    private List<MessageDto> messages;
+    String id;
+    List<MessageDto> messages;
 }

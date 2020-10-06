@@ -1,15 +1,13 @@
 package com.tomeortoyou.dto.response;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.List;
 
-@Setter
-@Getter
-@NoArgsConstructor
+@Builder
+@Value
 public class UserListDto {
-    public List<UserDto> userList;
+    List<UserDto> userList;
 }

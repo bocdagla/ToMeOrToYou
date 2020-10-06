@@ -8,6 +8,7 @@ import com.tomeortoyou.dto.response.UserListDto;
 import com.tomeortoyou.repositories.UserRepository;
 import com.tomeortoyou.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,22 +19,26 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public UserListDto allUsers() {
         return userService.getAllUsers();
     }
 
-    //TODO Change it so it gets the userId from the headers
+    //TODO Change it so it gets the userId from the headers or session
     @GetMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
     public UserDto getUser(@PathVariable String userId) {
         return userService.getUser(userId);
     }
 
     @PostMapping("/create")
-    public void createUser(@RequestBody CreateUserDto createUserDto) {
-        userService.createUser(createUserDto.getUsername());
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody CreateUserDto createUserDto) {
+        return userService.createUser(createUserDto);
     }
 
     @GetMapping("/{userid}/conversations")
+    @ResponseStatus(HttpStatus.OK)
     public ConversationListDto getUserConversations(@PathVariable String userid) {
         return userService.getUserConversations(userid);
     }

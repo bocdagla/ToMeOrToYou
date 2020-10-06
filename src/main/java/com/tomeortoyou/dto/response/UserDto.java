@@ -1,14 +1,13 @@
 package com.tomeortoyou.dto.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Value;
 
 //TODO Add Lombok validations
-@Setter
-@Getter
-@NoArgsConstructor
+
+@Builder
+@Value
 public class UserDto {
-    private String id;
-    private String userName;
+    String id;
+    String userName;
 }

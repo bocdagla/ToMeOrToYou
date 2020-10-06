@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
+
 @RestController
 @RequestMapping("/conversations")
 public class ConversationController {
@@ -18,23 +20,20 @@ public class ConversationController {
     private IConversationService conversationService;
 
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public ConversationListDto getConversations() {
         return conversationService.getAllConversations();
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public ConversationDto createConversation(@RequestBody CreateConversationDto createConversationDto) {
-        String senderId = createConversationDto.getSenderId();
-        String receiverId = createConversationDto.getReceiverId();
-        return conversationService.createConversation(senderId, receiverId);
+        return conversationService.createConversation(createConversationDto);
     }
 
     @PutMapping("/message/send")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public ConversationDto sendMessage(@RequestBody SendMessageDto messageDto) {
-        String userId = messageDto.getSenderId();
-        String conversationId = messageDto.getConversationId();
-        String content = messageDto.getContent();
-        return conversationService.addMessage(userId, conversationId, content);
+        return conversationService.addMessage(messageDto);
     }
 }

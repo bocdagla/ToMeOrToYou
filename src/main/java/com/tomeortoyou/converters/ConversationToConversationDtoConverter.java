@@ -13,18 +13,18 @@ public class ConversationToConversationDtoConverter implements Converter<Convers
 
     @Override
     public ConversationDto convert(Conversation source) {
-        ConversationDto result = new ConversationDto();
         List<MessageDto> messageDtoList = source.getMessages().stream()
                 .map(this::convertMessageToMessageDto)
                 .collect(Collectors.toList());
-        result.setId(source.getId());
-        result.setMessages(messageDtoList);
-        return result;
+        return ConversationDto.builder()
+                .id(source.getId())
+                .messages(messageDtoList)
+                .build();
     }
 
     private MessageDto convertMessageToMessageDto(Message message) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setContent(message.getContent());
-        return messageDto;
+        return MessageDto.builder()
+                .content(message.getContent())
+                .build();
     }
 }
