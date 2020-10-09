@@ -5,5 +5,5 @@ import com.tomeortoyou.entities.User;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ConversationRepository extends MongoRepository<Conversation, String> {
+public interface IConversationRepository extends MongoRepository<Conversation, String> {
 }

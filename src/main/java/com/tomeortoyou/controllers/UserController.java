@@ -5,7 +5,6 @@ import com.tomeortoyou.dto.request.CreateUserDto;
 import com.tomeortoyou.dto.response.ConversationListDto;
 import com.tomeortoyou.dto.response.UserDto;
 import com.tomeortoyou.dto.response.UserListDto;
-import com.tomeortoyou.repositories.UserRepository;
 import com.tomeortoyou.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

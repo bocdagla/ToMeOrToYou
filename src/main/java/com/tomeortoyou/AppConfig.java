@@ -1,7 +1,7 @@
 package com.tomeortoyou;
 
-import com.tomeortoyou.repositories.ConversationRepository;
-import com.tomeortoyou.repositories.UserRepository;
+import com.tomeortoyou.repositories.IConversationRepository;
+import com.tomeortoyou.repositories.IUserRepository;
 import com.tomeortoyou.services.ConversationService;
 import com.tomeortoyou.services.IConversationService;
 import com.tomeortoyou.services.IUserService;
@@ -14,15 +14,15 @@ import org.springframework.core.convert.ConversionService;
 public class AppConfig {
 
     @Bean
-    public IConversationService conversationService(ConversationRepository conversationRepository,
-                                                    UserRepository userRepository,
+    public IConversationService conversationService(IConversationRepository conversationRepository,
+                                                    IUserRepository userRepository,
                                                     ConversionService conversionService) {
         return new ConversationService(conversationRepository, userRepository, conversionService);
     }
 
     @Bean
-    public IUserService userService(ConversationRepository conversationRepository,
-                                    UserRepository userRepository,
+    public IUserService userService(IConversationRepository conversationRepository,
+                                    IUserRepository userRepository,
                                     ConversionService conversionService) {
         return new UserService(conversationRepository, userRepository, conversionService);
     }

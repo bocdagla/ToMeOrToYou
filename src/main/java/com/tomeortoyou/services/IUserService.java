@@ -8,6 +8,6 @@ import com.tomeortoyou.dto.response.UserListDto;
 public interface IUserService {
     UserListDto getAllUsers();
     UserDto getUser(String username);
-    UserDto createUser(CreateUserDto username);
+    UserDto createUser(CreateUserDto createUserDto);
     ConversationListDto getUserConversations(String username);
 }

@@ -7,22 +7,23 @@ import com.tomeortoyou.dto.response.UserDto;
 import com.tomeortoyou.dto.response.UserListDto;
 import com.tomeortoyou.entities.Conversation;
 import com.tomeortoyou.entities.User;
-import com.tomeortoyou.repositories.ConversationRepository;
-import com.tomeortoyou.repositories.UserRepository;
+import com.tomeortoyou.repositories.IConversationRepository;
+import com.tomeortoyou.repositories.IUserRepository;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserService implements IUserService {
 
-    private final ConversationRepository conversationRepository;
-    private final UserRepository userRepository;
+    private final IConversationRepository conversationRepository;
+    private final IUserRepository userRepository;
     private final ConversionService conversionService;
 
-    public UserService(ConversationRepository conversationRepository, UserRepository userRepository, ConversionService conversionService) {
+    public UserService(IConversationRepository conversationRepository, IUserRepository userRepository, ConversionService conversionService) {
         this.conversationRepository = conversationRepository;
         this.userRepository = userRepository;
         this.conversionService = conversionService;
@@ -41,26 +42,31 @@ public class UserService implements IUserService {
                 .map(this::convertUserToDto)
                 .collect(Collectors.toList());
         return UserListDto.builder()
-                .userList(userDtos)
+                .users(userDtos)
                 .build();
     }
 
     @Override
-    public UserDto createUser(CreateUserDto userDto) {
-        User user = new User(userDto.getUsername());
+    public UserDto createUser(CreateUserDto createUserDto) {
+        User user = new User();
+        user.setUsername(createUserDto.getUsername());
         userRepository.save(user);
         return conversionService.convert(user, UserDto.class);
     }
 
     //TODO Check if user exists if not throw custom error
-    public ConversationListDto getUserConversations(String username) {
-        User user = userRepository.findByUsername(username);
-        List<ConversationDto> userConversations = user.getConversations().stream()
-                .map(this::getConversationAndConvertToDto)
+    public ConversationListDto getUserConversations(String userId) {
+        List<Conversation> userConversations = new ArrayList<>();
+        User user = userRepository.findById(userId).orElseThrow(this::createUserNotFoundException);
+        conversationRepository.findAllById(user.getConversations())
+                .forEach(userConversations::add);
+
+        List<ConversationDto> conversationDtos = userConversations.stream()
+                .map(this::convertConversationToDto)
                 .collect(Collectors.toList());
 
         return ConversationListDto.builder()
-                .conversations(userConversations)
+                .conversations(conversationDtos)
                 .build();
     }
 
@@ -69,18 +75,15 @@ public class UserService implements IUserService {
         return conversionService.convert(user, UserDto.class);
     }
 
-    private ConversationDto getConversationAndConvertToDto(String conversationId) {
+    private ConversationDto convertConversationToDto(Conversation conversation) {
         //TODO Remove the conversation from the user and simply log it, this shouldn't stop the process
-        Conversation conversation = conversationRepository
-                .findById(conversationId)
-                .orElseThrow(this::createConversationNotFoundException);
         return conversionService.convert(conversation, ConversationDto.class);
     }
 
-
-    private ResponseStatusException createConversationNotFoundException() {
+    //TODO Create a ExceptionFactory so we don't use exception on the service and we can reuse them
+    private ResponseStatusException createUserNotFoundException() {
         return new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Conversation not found"
+                HttpStatus.NOT_FOUND, "User not found"
         );
     }
 }

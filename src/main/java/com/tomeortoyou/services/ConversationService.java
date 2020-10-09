@@ -7,8 +7,8 @@ import com.tomeortoyou.dto.response.ConversationListDto;
 import com.tomeortoyou.entities.Conversation;
 import com.tomeortoyou.entities.Message;
 import com.tomeortoyou.entities.User;
-import com.tomeortoyou.repositories.ConversationRepository;
-import com.tomeortoyou.repositories.UserRepository;
+import com.tomeortoyou.repositories.IConversationRepository;
+import com.tomeortoyou.repositories.IUserRepository;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 
 public class ConversationService implements IConversationService {
 
-    private final ConversationRepository conversationRepository;
-    private final UserRepository userRepository;
+    private final IConversationRepository conversationRepository;
+    private final IUserRepository userRepository;
     private final ConversionService conversionService;
 
-    public ConversationService(ConversationRepository conversationRepository, UserRepository userRepository, ConversionService conversionService) {
+    public ConversationService(IConversationRepository conversationRepository, IUserRepository userRepository, ConversionService conversionService) {
         this.conversationRepository = conversationRepository;
         this.userRepository = userRepository;
         this.conversionService = conversionService;
@@ -55,12 +55,12 @@ public class ConversationService implements IConversationService {
         //TODO Check if the conversation is already created, if not throw exception of type Conversation does not exist
         //TODO Make this so it doesn't need to create users one by one (maybe one method apart?)
         Conversation conversation = new Conversation();
-        conversation.addUser(sender);
-        conversation.addUser(receiver);
+        conversation.getUsers().add(sender.getId());
+        conversation.getUsers().add(receiver.getId());
         conversationRepository.save(conversation);
 
-        sender.addConversation(conversation);
-        receiver.addConversation(conversation);
+        sender.getConversations().add(conversation.getId());
+        receiver.getConversations().add(conversation.getId());
         userRepository.save(sender);
         userRepository.save(receiver);
 
@@ -79,8 +79,8 @@ public class ConversationService implements IConversationService {
                 .findById(conversationId)
                 .orElseThrow(this::createConversationNotFoundException);
 
-        Message message = new Message(user, content);
-        conversation.addMessage(message);
+        Message message = new Message(user.getId(), content);
+        conversation.getMessages().add(message);
         conversationRepository.save(conversation);
 
         return conversionService.convert(conversation, ConversationDto.class);
