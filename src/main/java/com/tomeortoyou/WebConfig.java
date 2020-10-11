@@ -1,7 +1,7 @@
 package com.tomeortoyou;
 
-import com.tomeortoyou.converters.ConversationToConversationDtoConverter;
-import com.tomeortoyou.converters.UserToUserDtoConverter;
+import com.tomeortoyou.converters.ConversationToDtoConverter;
+import com.tomeortoyou.converters.UserToDtoConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,8 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
 
-        registry.addConverter(new UserToUserDtoConverter());
-        registry.addConverter(new ConversationToConversationDtoConverter());
+        registry.addConverter(new UserToDtoConverter());
+        registry.addConverter(new ConversationToDtoConverter());
 
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 
 @TestConfiguration
-public class UserServiceTestConfig {
+public class ServicesTestConfig {
     @Bean
     public IUserService userService(IConversationRepository conversationRepository,
                                     IUserRepository userRepository,

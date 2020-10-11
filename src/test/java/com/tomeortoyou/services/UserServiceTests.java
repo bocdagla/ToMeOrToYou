@@ -1,6 +1,6 @@
 package com.tomeortoyou.services;
 
-import com.tomeortoyou.conf.UserServiceTestConfig;
+import com.tomeortoyou.conf.ServicesTestConfig;
 import com.tomeortoyou.dto.request.CreateUserDto;
 import com.tomeortoyou.dto.response.*;
 import com.tomeortoyou.mock.ConversionServiceMockDataGenerator;
@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 @ExtendWith(SpringExtension.class)
-@Import({UserServiceTestConfig.class})
+@Import({ServicesTestConfig.class})
 public class UserServiceTests {
     @MockBean
     private IUserRepository userRepository;

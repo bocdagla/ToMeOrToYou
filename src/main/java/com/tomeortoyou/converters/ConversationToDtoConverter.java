@@ -9,7 +9,7 @@ import org.springframework.core.convert.converter.Converter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ConversationToConversationDtoConverter implements Converter<Conversation, ConversationDto> {
+public class ConversationToDtoConverter implements Converter<Conversation, ConversationDto> {
 
     @Override
     public ConversationDto convert(Conversation source) {

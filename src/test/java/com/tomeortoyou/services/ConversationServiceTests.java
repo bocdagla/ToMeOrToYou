@@ -1,7 +1,7 @@
 package com.tomeortoyou.services;
 
 
-import com.tomeortoyou.conf.UserServiceTestConfig;
+import com.tomeortoyou.conf.ServicesTestConfig;
 import com.tomeortoyou.dto.request.CreateConversationDto;
 import com.tomeortoyou.dto.request.SendMessageDto;
 import com.tomeortoyou.dto.response.ConversationDto;
@@ -26,10 +26,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@Import({UserServiceTestConfig.class})
+@Import({ServicesTestConfig.class})
 public class ConversationServiceTests {
-
-
     @MockBean
     private IUserRepository userRepository;
     @MockBean
