@@ -14,7 +14,7 @@ By now a Conversation can only be created for only two users but check the roadm
 Yes, this isn't the final product.
 
 - [x] Create a basic Message Api
-- [ ] Add JUnit tests
+- [x] Add JUnit tests (they won't stop comming)
 - [ ] Add User autentication through OAuth or similar
 - [ ] Single use tokens for the logged user
 - [ ] Group Chats
